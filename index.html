@@ -7,15 +7,10 @@
     <style>
         /* Стили таблицы */
         body {
-            background-color: #414141;
+            background-color: rgb(107, 102, 100);
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
         }
 
         /* Стили для таблицы */
@@ -27,44 +22,14 @@
             border-radius: 8px;
             overflow: hidden;
         }
-        th, td {
+        th, td
+        {
             text-align: center;
             border: 2px solid #000000; /* Добавляем границы к ячейкам */
+            color: #45a049;
             font-size: 20px;
             min-width: 100px;
             position: relative;
-            padding-left: 24px;
-        }
-
-        th i, td i {
-            position: absolute;
-            left: 6px; /* Смещаем значок ближе к тексту */
-            top: 50%; /* Смещаем значок по центру вертикально */
-            transform: translateY(-50%); /* Центрируем значок по вертикали */
-            font-size: 20px; /* Увеличиваем размер значка */
-            transition: color 0.3s; /* Добавляем анимацию для цвета */
-            cursor: help; /* Задаем указатель при наведении на значок */
-        }
-        th[data-required="true"] i {
-            color: red;
-        }
-        th[data-required="false"] i {
-            color: green;
-        }
-        th i:hover::after {
-            /* Подсказка при наведении на значок */
-            content: attr(data-tooltip);
-            position: absolute;
-            left: 30px;
-            top: 50%;
-            transform: translateY(-50%);
-            padding: 6px 10px;
-            background-color: #333;
-            color: #fff;
-            font-size: 14px;
-            font-family: "Arial",system-ui;
-            border-radius: 6px;
-            white-space: nowrap;
         }
 
         tr {
@@ -81,13 +46,16 @@
 
         td {
             text-align: center; /* Выравнивание содержимого ячейки по центру */
+            background-color: #6b6664;
+            color: white;
+            font-weight: bold;
         }
 
         /* Стили для выпадающего меню */
         td select
         {
-            width: 100%;
-            padding: 8px;
+            width: 70%;
+            padding: 3px;
             font-size: 18px;
             border: 3px solid #ddd;
             border-radius: 6px;
@@ -104,12 +72,16 @@
             border-color: #4CAF50;
         }
 
-
-        /* Дополнительные стили для измененных ячеек (зеленый) */
-        .changed {
-            background-color: #4CAF50;
-            color: white;
-            font-weight: bold;
+        .table-menu h1
+        {
+            align-content: center;
+            position: fixed;
+            left: 45%;
+            margin: 5px;
+            z-index: 2;
+            font-family: Arial, sans-serif;
+            font-size: 35px;
+            color: #4CAF50;
         }
 
         .floating-buttons button {
@@ -159,23 +131,26 @@
         }
 
         /* Стили для кнопок управления */
-        .control-buttons button {
+        .control-buttons button
+        {
             padding: 14px;
             background-color: #4CAF50;
             color: white;
             font-size: 18px;
             border: none;
             border-radius: 35%;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px black;
             transition: background-color 0.3s ease;
         }
 
-        .control-buttons button:hover {
+        .control-buttons button:hover
+        {
             background-color: #45a049;
         }
 
         /* Стили для ссылок */
-        .social-links a {
+        .social-links a
+        {
             display: inline-block;
             padding: 14px;
             background-color: #4CAF50;
@@ -183,15 +158,17 @@
             font-size: 18px;
             text-decoration: none;
             border-radius: 35%;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px black;
             transition: background-color 0.3s ease;
         }
 
-        .social-links a:hover {
+        .social-links a:hover
+        {
             background-color: #45a049;
         }
 
-        .context-menu {
+        .context-menu
+        {
             position: fixed;
             z-index: 2;
             background-color: #fff;
@@ -200,32 +177,181 @@
             display: none;
             padding: 5px;
         }
-        .context-menu button {
+
+        .context-menu button
+        {
             display: block;
             padding: 5px;
             border: none;
             background-color: transparent;
             cursor: pointer;
         }
-        .context-menu button:hover {
+
+        .context-menu button:hover
+        {
             background-color: #f2f2f2;
+        }
+
+        .help-panel
+        {
+            max-width: 1200px; /* Adjust the width as needed */
+            padding: 20px; /* Increase padding for better spacing */
+            border: 2px solid black; /* Add a border with the color you like */
+            border-radius: 10px; /* Add rounded corners */
+            background-color: #fff; /* Set a background color */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 4; /* Make sure it's above other elements */
+        }
+
+        .help-keyword {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        /* Close button styles */
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            border: none;
+            background-color: transparent;
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .confirmation-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 3;
+        }
+
+        .confirmation-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Add this line */
+            z-index: 4; /* Make sure it's above other elements */
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .confirm-button,
+        .cancel-button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .confirm-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .cancel-button {
+            background-color: #ccc;
+            color: #333;
+        }
+
+        .backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            z-index: 3; /* Задний фон должен быть над всеми остальными элементами */
+            display: none; /* Начальное состояние - скрыто */
+        }
+
+        .invalid-cell {
+            background-color: rgba(255, 0, 0, 0.5); /* Чуть темнее красный цвет */
+            transition: background-color 8s ease; /* Плавная анимация на 8 секунд */
+        }
+
+        .invalid-cell.fade-out {
+            background-color: #6b6664; /* Обратный цвет (исчезновение) */
         }
 
     </style>
 </head>
 <body>
+<div class="backdrop" id="backdrop"></div>
+
+<div class="help-panel" id="helpPanel">
+    <button class="close-button" onclick="closeHelpPanel()">&times;</button>
+    <p>Here's how to use the tool:</p>
+    <p>
+        To add a new row, click the <span class="help-keyword">Add row</span> button. Fill in the required values.
+        For the <span class="help-keyword">Direction</span> column, choose between <span class="help-keyword">0</span> (Backward)
+        and <span class="help-keyword">1</span> (Forward).
+    </p>
+    <p>
+        Use the <span class="help-keyword">Import table</span> button to import data, and the <span class="help-keyword">Save table</span>
+        button to save your changes. The <span class="help-keyword">Clear table</span> button removes all rows.
+    </p>
+    <p>
+        When you're ready, click the <span class="help-keyword">Start</span> button to begin, and the <span class="help-keyword">Stop</span>
+        button to pause. If you have questions, refer to our <span class="help-keyword">YouTube</span>, <span class="help-keyword">Gmail</span>,
+        or <span class="help-keyword">Telegram</span> for support.
+    </p>
+</div>
+
+<!-- Confirmation Window -->
+<div class="confirmation-panel" id="confirmationPanel">
+    <div class="confirmation-content">
+        <span class="close-button" onclick="closeConfirmationPanel()">&times;</span>
+        <p id="confirmationMessage"></p>
+        <button class="confirm-button" onclick="OnConfirm()">Yes</button>
+        <button class="cancel-button" onclick="closeConfirmationPanel()">No</button>
+    </div>
+</div>
+
+<!-- Error Panel -->
+<div class="confirmation-panel" id="errorPanel">
+    <div class="confirmation-content">
+        <span class="close-button" onclick="closeErrorPanel()">&times;</span>
+        <p id="errorMessage"></p>
+        <button class="confirm-button" onclick="closeErrorPanel()">OK</button>
+    </div>
+</div>
 
 <h1>Queue</h1>
 <table id="myTable">
     <tr>
-        <th data-required="true">Step<i class="fas fa-exclamation-circle" data-tooltip="Required field"></i></th>
-        <th data-required="true">Engine ID<i class="fas fa-exclamation-circle" data-tooltip="Required field"></i></th>
-        <th data-required="true">Direction<i class="fas fa-exclamation-circle" data-tooltip="Required field"></i></th>
-        <th data-required="true">Start Speed<i class="fas fa-exclamation-circle" data-tooltip="Required field"></i></th>
-        <th data-required="true">End Speed<i class="fas fa-exclamation-circle" data-tooltip="Required field"></i></th>
-        <th data-required="false">Engine ID <i class="fas fa-check-circle" data-tooltip="Optional field"></i></th>
-        <th data-required="false">Start speed <i class="fas fa-check-circle" data-tooltip="Optional field"></i></th>
-        <th data-required="false">End Speed <i class="fas fa-check-circle" data-tooltip="Optional field"></i></th>
+        <th data-required="true">Step</th>
+        <th data-required="true">Engine ID</th>
+        <th data-required="true">Direction</th>
+        <th data-required="true">Start Speed</th>
+        <th data-required="true">End Speed</th>
+        <th data-required="false">Engine ID</th>
+        <th data-required="false">Start speed</th>
+        <th data-required="false">End Speed</th>
     </tr>
 </table>
 
@@ -233,9 +359,11 @@
 <div class="table-menu" id="tableMenu">
     <div class="social-links">
         <a href="https://www.youtube.com/channel/UCS1C2KKheFF0BDf8AMKQ6Qw" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-        <a href="mailto:serginio1963@gmail.com target="_blank" title="Gmail"><i class="fab fa-google"></i></a>
+        <a href="mailto:serginio1963@gmail.com" target="_blank" title="Gmail"><i class="fab fa-google"></i></a>
         <a href="https://t.me/serginius" target="_blank" title="Telegram"><i class="fab fa-telegram"></i></a>
     </div>
+
+    <h1>CNC Tool </h1>
 
     <div class="control-buttons">
         <button onclick="addRow()" title="Add row"><i class="fas fa-plus"></i></button>
@@ -244,6 +372,7 @@
         <button onclick="clearTable()" title="Clear table"><i class="fas fa-trash"></i></button>
         <button onclick="start()" title="Start"><i class="fas fa-play"></i></button>
         <button onclick="stop()" title="Stop"><i class="fas fa-stop"></i></button>
+        <button onclick="help()" title="Help"><i class="fas fa-question"></i></button>
     </div>
 </div>
 
@@ -304,7 +433,6 @@
             var cell = row.insertCell(i);
             cell.innerHTML = ""; // Значение по умолчанию - "0".
             cell.setAttribute("contenteditable", "true"); // Делаем ячейку редактируемой.
-            cell.classList.add("changed"); // Добавляем класс для неизмененных ячеек.
             cell.addEventListener("keydown", preventNonNumericInput);
 
             if (i === 2) // Если это ячейка "Direction"
@@ -325,57 +453,171 @@
                 option1.title = "forward";
                 selectElement.appendChild(option1);
 
-                // Установим значение по умолчанию, чтобы оно было равно текущему тексту ячейки
-                var currentValue = cell.textContent.trim();
-                selectElement.value = currentValue;
-
                 cell.innerHTML = ""; // Очищаем содержимое ячейки
-                cell.appendChild(selectElement); // Добавляем выпадающий список
+                cell.appendChild(selectElement);
             }
         }
-
-
     }
 
-    // Функции для новых кнопок меню
-    function importTable() {
-        alert("Функция импорта таблицы будет добавлена позже.");
-    }
-
-    function start() {
+    function start()
+    {
         alert("Функция сохранения таблицы будет добавлена позже.");
     }
 
-    function stop() {
+    function stop()
+    {
         alert("Функция сохранения таблицы будет добавлена позже.");
     }
 
-    function clearTable() {
+    var helpPanel = document.getElementById("helpPanel");
+
+
+    help();
+    function help()
+    {
+        var backdrop = document.getElementById("backdrop");
+        backdrop.style.display = "block";
+        helpPanel.style.display = "block";
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeHelpPanel()
+    {
+        var backdrop = document.getElementById("backdrop");
+        backdrop.style.display = "none";
+        helpPanel.style.display = "none";
+        document.body.style.overflow = "auto"; // Restore scrolling
+    }
+
+    let confirmationFunction = null;
+
+    function confirmImport()
+    {
+        var confirmationPanel = document.getElementById("confirmationPanel");
+        if (confirmationPanel.style.display === "block")
+        {
+            closeConfirmationPanel();
+        }
+    }
+
+    function importTable()
+    {
+        confirmationFunction = confirmImport;
+
+        if (document.getElementById("myTable").rows.length > 1)
+        {
+            openConfirmationPanel("Are you sure you want to import new table?");
+        }
+        else
+        {
+            confirmationFunction();
+        }
+    }
+
+    function confirmClearTable()
+    {
+        var confirmationPanel = document.getElementById("confirmationPanel");
+        if (confirmationPanel.style.display === "block")
+        {
+            closeConfirmationPanel();
+        }
+
         var table = document.getElementById("myTable");
-        for (var i = table.rows.length - 1; i > 0; i--) {
+        for (var i = table.rows.length - 1; i > 0; i--)
+        {
             table.deleteRow(i);
         }
     }
 
-    function exportTable() {
+    function clearTable()
+    {
+        confirmationFunction = confirmClearTable;
+
+        if (document.getElementById("myTable").rows.length > 1)
+        {
+            openConfirmationPanel("Are you sure you want to clear the table?");
+        }
+        else
+        {
+            confirmationFunction();
+        }
+    }
+
+    function OnConfirm()
+    {
+        confirmationFunction();
+    }
+
+    function openConfirmationPanel(message)
+    {
+        var backdrop = document.getElementById("backdrop");
+        var confirmationPanel = document.getElementById("confirmationPanel");
+        var confirmationMessage = document.getElementById("confirmationMessage");
+        backdrop.style.display = "block";
+        confirmationMessage.textContent = message;
+        confirmationPanel.style.display = "block";
+    }
+
+    function closeConfirmationPanel()
+    {
+        var backdrop = document.getElementById("backdrop");
+        var confirmationPanel = document.getElementById("confirmationPanel");
+        backdrop.style.display = "none";
+        confirmationPanel.style.display = "none";
+    }
+
+
+    const invalidCells = [];
+
+    function exportTable()
+    {
         const table = document.getElementById('myTable');
         let content = '';
 
-        for (let i = 1; i < table.rows.length; i++) { // Начинаем с 1, чтобы пропустить заголовки столбцов
-            const row = table.rows[i];
+        if(table.rows.length <= 1) return;
 
-            for (let j = 0; j < row.cells.length; j++) {
-                const cellValue = row.cells[j].textContent.trim();
+        validateTable();
+
+        if (invalidCells.length > 0)
+        {
+            showErrors("Please correct the highlighted cells before exporting.");
+            return;
+        }
+
+        for (let i = 1; i < table.rows.length; i++)
+        {
+            const row = table.rows[i];
+            const countOfCells = countNonEmptyCells(row);
+
+            for (let j = 0; j < countOfCells; j++)
+            {
+                let cellElement = row.cells[j];
+                let cellValue;
+
+                if(j === 2)
+                {
+                    const selectElement = cellElement.querySelector(".direction-select");
+                    cellValue = selectElement.value;
+                }
+                else
+                {
+                    cellValue = cellElement.textContent.trim();
+                }
+
                 content += cellValue;
 
-                if (j !== row.cells.length - 1) {
+                if (j !== countOfCells - 1 && cellValue !== "")
+                {
                     content += ',';
                 }
             }
 
-            if (i !== table.rows.length - 1) {
+            if (i !== table.rows.length - 1)
+            {
                 content += ';\n';
-            } else {
+            }
+            else
+            {
                 content += ';!';
             }
         }
@@ -388,6 +630,128 @@
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+    }
+
+    function validateTable()
+    {
+        invalidCells.length = 0;
+
+        const table = document.getElementById('myTable');
+        for (let i = 1; i < table.rows.length; i++)
+        {
+            const row = table.rows[i];
+
+            for (let j = 0; j < 5; j++)
+            {
+                let cellElement = row.cells[j];
+                let cellData;
+
+                if(j === 2)
+                {
+                    const selectElement = cellElement.querySelector(".direction-select");
+                    cellData = selectElement.value;
+                }
+                else
+                {
+                    cellData = cellElement.textContent.trim();
+                }
+
+                if (cellData === "")
+                {
+                    invalidCells.push({row: i, cell: j});
+                }
+            }
+
+            let content5 = row.cells[5].textContent.trim();
+            let content6 = row.cells[6].textContent.trim();
+            let content7 = row.cells[7].textContent.trim();
+
+            if (content5 !== "" || content6 !== "" || content7 !== "")
+            {
+                if(content5 === "") invalidCells.push({row: i, cell: 5});
+                if(content6 === "") invalidCells.push({row: i, cell: 6});
+                if(content7 === "") invalidCells.push({row: i, cell: 7});
+            }
+        }
+    }
+
+    function countNonEmptyCells(row)
+    {
+        let count = 0;
+
+        for (let j = 0; j < row.cells.length; j++)
+        {
+            let cellElement = row.cells[j];
+            let cellData;
+
+            if(j === 2)
+            {
+                const selectElement = cellElement.querySelector(".direction-select");
+                cellData = selectElement.value;
+            }
+            else
+            {
+                cellData = cellElement.textContent.trim();
+            }
+
+
+            if (cellData !== "")
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    function showErrors(message)
+    {
+        openErrorPanel(message);
+
+        const table = document.getElementById("myTable");
+        for (const cellInfo of invalidCells) {
+            const row = cellInfo.row;
+            const cellIndex = cellInfo.cell;
+            const rowElement = table.rows[row];
+            const cellElement = rowElement.cells[cellIndex];
+
+            cellElement.classList.add("invalid-cell");
+        }
+
+        setTimeout(function () {
+            for (const cellInfo of invalidCells) {
+                const row = cellInfo.row;
+                const cellIndex = cellInfo.cell;
+                const rowElement = table.rows[row];
+                const cellElement = rowElement.cells[cellIndex];
+
+                cellElement.classList.add("fade-out");
+
+                setTimeout(function () {
+                    cellElement.classList.remove("invalid-cell", "fade-out");
+                }, 3000); // Удалить классы через 8 секунд
+            }
+        }, 3000); // Добавить класс "fade-out" через 100 миллисекунд после добавления "invalid-cell"
+    }
+
+    function openErrorPanel(message) {
+        const errorPanel = document.getElementById('errorPanel');
+        const errorMessage = document.getElementById('errorMessage');
+        const backdrop = document.getElementById('backdrop');
+
+        backdrop.style.display = 'block';
+        errorMessage.textContent = message;
+        errorPanel.style.display = 'block';
+    }
+
+    function closeErrorPanel() {
+        const errorPanel = document.getElementById('errorPanel');
+        const backdrop = document.getElementById('backdrop');
+        const errorCells = document.querySelectorAll('.error-cell');
+
+        errorCells.forEach(cell => cell.classList.remove('error-cell'));
+        backdrop.style.display = 'none';
+        errorPanel.style.display = 'none';
     }
 </script>
 
