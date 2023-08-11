@@ -258,7 +258,8 @@
         }
 
         .confirm-button,
-        .cancel-button {
+        .cancel-button
+        {
             padding: 10px 20px;
             margin: 0 10px;
             font-size: 18px;
@@ -267,17 +268,20 @@
             cursor: pointer;
         }
 
-        .confirm-button {
+        .confirm-button
+        {
             background-color: #4CAF50;
             color: white;
         }
 
-        .cancel-button {
+        .cancel-button
+        {
             background-color: #ccc;
             color: #333;
         }
 
-        .backdrop {
+        .backdrop
+        {
             position: fixed;
             top: 0;
             left: 0;
@@ -289,19 +293,59 @@
             display: none; /* Начальное состояние - скрыто */
         }
 
-        .invalid-cell {
+        .invalid-cell
+        {
             background-color: rgba(255, 0, 0, 0.5); /* Чуть темнее красный цвет */
             transition: background-color 8s ease; /* Плавная анимация на 8 секунд */
         }
 
-        .invalid-cell.fade-out {
+        .invalid-cell.fade-out
+        {
             background-color: #6b6664; /* Обратный цвет (исчезновение) */
+        }
+
+        .notification
+        {
+            position: fixed;
+            bottom: -100px; /* Начальная позиция уведомления */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px; /* Ширина уведомления */
+            padding: 15px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            font-size: 18px; /* Размер текста уведомления */
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+            z-index: 1000;
+            cursor: pointer;
+        }
+
+        /* Анимация появления */
+        .notification.show
+        {
+            opacity: 1;
+            bottom: 20px; /* Конечная позиция уведомления */
+            transition: opacity 0.3s, bottom 0.3s;
+        }
+
+        /* Анимация исчезновения */
+        .notification.hide
+        {
+            opacity: 0;
+            bottom: -100px; /* Начальная позиция уведомления */
+            transition: opacity 0.3s, bottom 0.3s;
         }
 
     </style>
 </head>
 <body>
 <div class="backdrop" id="backdrop"></div>
+
+<div class="notification" id="notification"></div>
 
 <div class="help-panel" id="helpPanel">
     <button class="close-button" onclick="closeHelpPanel()">&times;</button>
@@ -376,6 +420,8 @@
     </div>
 </div>
 
+<input type="file" id="fileInput" style="display: none" accept=".txt">
+
 <!-- Контекстное меню -->
 <div class="context-menu" id="contextMenu">
     <button onclick="deleteRow(event)">Удалить строку</button>
@@ -385,6 +431,7 @@
 
     function preventNonNumericInput(event) {
         var charCode = event.which ? event.which : event.keyCode;
+
         if (charCode !== 8 && (charCode < 48 || charCode > 57) && charCode !== 46)
         {
             event.preventDefault();
@@ -400,25 +447,33 @@
 
         // Определение, на какую строку был сделан щелчок
         var targetRow = event.target.closest("tr");
-        if (targetRow && targetRow !== this.rows[0]) {
+
+        if (targetRow && targetRow !== this.rows[0])
+        {
             contextMenu.dataset.rowIndex = targetRow.rowIndex;
         }
     });
 
     // Обработчик события click для скрытия контекстного меню
-    document.addEventListener("click", function (event) {
+    document.addEventListener("click", function (event)
+    {
         var contextMenu = document.getElementById("contextMenu");
-        if (!event.target.closest(".context-menu")) {
+
+        if (!event.target.closest(".context-menu"))
+        {
             contextMenu.style.display = "none";
         }
     });
 
     // Добавляем функцию удаления строки
-    function deleteRow(event) {
+    function deleteRow(event)
+    {
         var contextMenu = document.getElementById("contextMenu");
         var rowIndex = contextMenu.dataset.rowIndex;
         var table = document.getElementById("myTable");
-        if (rowIndex && rowIndex > 0) {
+
+        if (rowIndex && rowIndex > 0)
+        {
             table.deleteRow(rowIndex);
         }
         contextMenu.style.display = "none";
@@ -459,17 +514,45 @@
         }
     }
 
-    function start()
+    let notificationCounter = 0;
+
+    function showNotification(text)
     {
-        alert("Функция сохранения таблицы будет добавлена позже.");
+        var notification = document.createElement('div');
+        notification.classList.add('notification');
+        notification.id = 'notification-' + notificationCounter;
+        notification.onclick = function()
+        {
+            hideNotification(notification.id);
+        };
+
+        notification.innerHTML = '<div>' + text + '</div>';
+        document.body.appendChild(notification);
+
+        setTimeout(function() {
+            notification.classList.add('show');
+        }, 0);
+
+        setTimeout(function() {
+            hideNotification(notification.id);
+        }, 4000);
+
+        notificationCounter++;
     }
 
-    function stop()
-    {
-        alert("Функция сохранения таблицы будет добавлена позже.");
+    function hideNotification(notificationId) {
+        var notification = document.getElementById(notificationId);
+        if (notification) {
+            notification.classList.remove('show');
+            notification.classList.add('hide');
+
+            setTimeout(function() {
+                notification.remove();
+            }, 1000);
+        }
     }
 
-    var helpPanel = document.getElementById("helpPanel");
+    let helpPanel = document.getElementById("helpPanel");
 
 
     help();
@@ -489,6 +572,35 @@
         document.body.style.overflow = "auto"; // Restore scrolling
     }
 
+    function start()
+    {
+        const content = GetContent();
+
+        if(content === "") return;
+
+        const startEvent = new CustomEvent('startEvent', { detail: content });
+        document.dispatchEvent(startEvent);
+    }
+
+    function stop()
+    {
+        const stopEvent = new Event('stopEvent');
+        document.dispatchEvent(stopEvent);
+    }
+
+    document.addEventListener('startEvent', function(event)
+    {
+        let content = event.detail;
+        console.log('startEvent', content);
+        showNotification("Started");
+    });
+
+    document.addEventListener('stopEvent', function(event)
+    {
+        console.log('stopEvent');
+        showNotification("Stopped");
+    });
+
     let confirmationFunction = null;
 
     function confirmImport()
@@ -498,6 +610,73 @@
         {
             closeConfirmationPanel();
         }
+
+        importFromFile();
+    }
+
+
+    function importFromFile()
+    {
+        const fileInput = document.getElementById('fileInput');
+        fileInput.click();
+    }
+
+    document.getElementById('fileInput').addEventListener('change', handleFileSelect, false);
+
+    function handleFileSelect(event)
+    {
+        const file = event.target.files[0];
+
+        if (file)
+        {
+            const reader = new FileReader();
+            reader.onload = function (e)
+            {
+                const contents = e.target.result;
+                updateTableFromText(contents);
+            };
+            reader.readAsText(file);
+        }
+
+        document.getElementById('fileInput').value = '';
+    }
+
+    function updateTableFromText(text)
+    {
+        clear();
+
+        const table = document.getElementById('myTable');
+        const rows = text.trim().split(';'); // Разделяем текст на строки
+
+        // Пропускаем первую строку (заголовок таблицы)
+        for (let i = 0; i < rows.length; i++)
+        {
+            const rowText = rows[i];
+            let rowIndex = i + 1;
+
+            if(rowText.includes("!")) break;
+
+            addRow();
+            const cells = rowText.split(','); // Разделяем строку на ячейки
+
+            for (let j = 0; j < cells.length; j++)
+            {
+                let cellText = cells[j];
+                let cell = table.rows[rowIndex].cells[j];
+
+                if(j === 2)
+                {
+                    const selectElement = cell.querySelector(".direction-select");
+                    selectElement.value = cellText;
+                }
+                else
+                {
+                    cell.textContent = cellText;
+                }
+            }
+        }
+
+        showNotification("Successfully imported");
     }
 
     function importTable()
@@ -522,8 +701,16 @@
             closeConfirmationPanel();
         }
 
-        var table = document.getElementById("myTable");
-        for (var i = table.rows.length - 1; i > 0; i--)
+        clear();
+
+        showNotification("Table cleared");
+    }
+
+    function clear()
+    {
+        const table = document.getElementById("myTable");
+
+        for (let i = table.rows.length - 1; i > 0; i--)
         {
             table.deleteRow(i);
         }
@@ -571,17 +758,35 @@
 
     function exportTable()
     {
+        let content = GetContent();
+
+        if(content === "") return;
+
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'table_data.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        showNotification("Data saved");
+    }
+
+    function GetContent()
+    {
         const table = document.getElementById('myTable');
         let content = '';
 
-        if(table.rows.length <= 1) return;
+        if(table.rows.length <= 1) return "";
 
         validateTable();
 
         if (invalidCells.length > 0)
         {
-            showErrors("Please correct the highlighted cells before exporting.");
-            return;
+            showErrors("Please correct the highlighted cells.");
+            return "";
         }
 
         for (let i = 1; i < table.rows.length; i++)
@@ -622,14 +827,7 @@
             }
         }
 
-        const blob = new Blob([content], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'table_data.txt';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        return content;
     }
 
     function validateTable()
