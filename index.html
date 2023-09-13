@@ -340,6 +340,35 @@
             transition: opacity 0.3s, bottom 0.3s;
         }
 
+        .toggle-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .toggle {
+            flex: 1; /* Занимает всю доступную ширину внутри контейнера */
+            height: 30px; /* Высота тогла */
+            border: 1px solid rgb(76, 175, 80); /* Зеленая рамка */
+            background-color: white; /* Белый фон */
+            display: inline-block;
+            cursor: pointer;
+            text-align: center;
+            line-height: 20px;
+            color: rgb(76, 175, 80); /* Зеленый текст */
+            font-weight: bold;
+            border-radius: 10px; /* Закругленные края */
+            margin: 0 5px; /* Отступы между тоглами */
+            transition: background-color 0.3s, color 0.3s; /* Плавное изменение цвета при наведении */
+        }
+
+        .toggle:hover {
+            background-color: rgb(76, 175, 80); /* Зеленый фон при наведении */
+            color: white; /* Белый текст при наведении */
+        }
+
     </style>
 </head>
 <body>
@@ -484,33 +513,12 @@
         var row = table.insertRow(-1); // Вставляем строку в конец таблицы (-1).
         var colCount = table.rows[0].cells.length; // Получаем количество столбцов в таблице.
 
-        for (var i = 0; i < colCount; i++) {
+        for (var i = 0; i < colCount; i++)
+        {
             var cell = row.insertCell(i);
             cell.innerHTML = ""; // Значение по умолчанию - "0".
             cell.setAttribute("contenteditable", "true"); // Делаем ячейку редактируемой.
             cell.addEventListener("keydown", preventNonNumericInput);
-
-            if (i === 2) // Если это ячейка "Direction"
-            {
-                cell.setAttribute("contenteditable", "false");
-                var selectElement = document.createElement("select");
-                selectElement.classList.add("direction-select"); // Добавим класс для стилизации
-
-                var option0 = document.createElement("option");
-                option0.value = "0";
-                option0.text = "0";
-                option0.title = "backward";
-                selectElement.appendChild(option0);
-
-                var option1 = document.createElement("option");
-                option1.value = "1";
-                option1.text = "1";
-                option1.title = "forward";
-                selectElement.appendChild(option1);
-
-                cell.innerHTML = ""; // Очищаем содержимое ячейки
-                cell.appendChild(selectElement);
-            }
         }
     }
 
@@ -664,15 +672,16 @@
                 let cellText = cells[j];
                 let cell = table.rows[rowIndex].cells[j];
 
-                if(j === 2)
+                let parsedText = parseInt(cellText, 10);
+
+                if(isNaN(parsedText))
                 {
-                    const selectElement = cell.querySelector(".direction-select");
-                    selectElement.value = cellText;
+                    showNotification("Error!! There is a non-numeric element detected in the file you are importing.");
+                    clear();
+                    return;
                 }
-                else
-                {
-                    cell.textContent = cellText;
-                }
+
+                cell.textContent = cellText;
             }
         }
 
@@ -702,7 +711,6 @@
         }
 
         clear();
-
         showNotification("Table cleared");
     }
 
@@ -799,16 +807,7 @@
                 let cellElement = row.cells[j];
                 let cellValue;
 
-                if(j === 2)
-                {
-                    const selectElement = cellElement.querySelector(".direction-select");
-                    cellValue = selectElement.value;
-                }
-                else
-                {
-                    cellValue = cellElement.textContent.trim();
-                }
-
+                cellValue = cellElement.textContent.trim();
                 content += cellValue;
 
                 if (j !== countOfCells - 1 && cellValue !== "")
@@ -846,8 +845,16 @@
 
                 if(j === 2)
                 {
-                    const selectElement = cellElement.querySelector(".direction-select");
-                    cellData = selectElement.value;
+                    cellData = cellElement.textContent.trim();
+
+                    let firstElement = row.cells[0].textContent.trim();
+                    let firstIntegerValue = parseInt(firstElement, 10);
+                    let currentIntegerValue = parseInt(cellData, 10);
+
+                    if(currentIntegerValue > firstIntegerValue)
+                    {
+                        invalidCells.push({row: i, cell: j});
+                    }
                 }
                 else
                 {
@@ -882,16 +889,7 @@
             let cellElement = row.cells[j];
             let cellData;
 
-            if(j === 2)
-            {
-                const selectElement = cellElement.querySelector(".direction-select");
-                cellData = selectElement.value;
-            }
-            else
-            {
-                cellData = cellElement.textContent.trim();
-            }
-
+            cellData = cellElement.textContent.trim();
 
             if (cellData !== "")
             {
