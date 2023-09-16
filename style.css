@@ -1,0 +1,368 @@
+/* Стили таблицы */
+body {
+    background-color: rgb(113,113,123);
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Стили для таблицы */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+th, td
+{
+    text-align: center;
+    border: 1px solid #000000; /* Добавляем границы к ячейкам */
+    color: #45a049;
+    font-size: 20px;
+    min-width: 100px;
+    position: relative;
+}
+
+tr {
+    /* Увеличиваем высоту строк */
+    height: 50px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+tr:nth-child(even) {
+    background-color: #f7f7f7;
+}
+
+td {
+    text-align: center; /* Выравнивание содержимого ячейки по центру */
+    background-color: #71717b;
+    color: white;
+    font-weight: bold;
+}
+
+/* Стили для выпадающего меню */
+td select
+{
+    width: 70%;
+    padding: 3px;
+    font-size: 18px;
+    border: 3px solid #ddd;
+    border-radius: 6px;
+    background-color: #ffffff;
+    transition: border-color 0.3s;
+}
+
+td select:hover {
+    border-color: black;
+}
+
+td select:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+.table-menu h1
+{
+    align-content: center;
+    position: fixed;
+    left: 45%;
+    margin: 5px;
+    z-index: 2;
+    font-family: Arial, sans-serif;
+    font-size: 35px;
+    color: #4CAF50;
+}
+
+.floating-buttons button {
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 18px;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+.floating-buttons button:hover {
+    background-color: #45a049;
+}
+
+/* Кнопки меню (предыдущий стиль) */
+.table-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f2f2f2;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+    z-index: 1;
+}
+
+
+/* Контейнер для ссылок справа в верхнем углу */
+.social-links {
+    gap: 10px;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    display: flex;
+}
+
+/* Контейнер для кнопок управления слева в верхнем углу */
+.control-buttons {
+    top: 10px;
+    left: 20px;
+    gap: 10px;
+    display: flex;
+}
+
+/* Стили для кнопок управления */
+.control-buttons button
+{
+    padding: 14px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 15%;
+    box-shadow: 0 2px 8px black;
+    transition: background-color 0.3s ease;
+}
+
+.control-buttons button:hover
+{
+    background-color: #45a049;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.social-links a {
+    text-decoration: none;
+    padding: 14px;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px black;
+    background-color: #4CAF50;
+    transition: background-color 0.3s ease;
+}
+
+.social-links a:hover
+{
+    background-color: #45a049;
+}
+
+.context-menu
+{
+    position: fixed;
+    z-index: 2;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    display: none;
+    padding: 5px;
+}
+
+.context-menu button
+{
+    display: block;
+    padding: 5px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.context-menu button:hover
+{
+    background-color: #f2f2f2;
+}
+
+.help-panel
+{
+    max-width: 1200px; /* Adjust the width as needed */
+    padding: 20px; /* Increase padding for better spacing */
+    border: 2px solid black; /* Add a border with the color you like */
+    border-radius: 10px; /* Add rounded corners */
+    background-color: #fff; /* Set a background color */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4; /* Make sure it's above other elements */
+}
+
+.help-keyword {
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+/* Close button styles */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background-color: transparent;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+}
+
+.confirmation-panel {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 3;
+}
+
+.confirmation-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Add this line */
+    z-index: 4; /* Make sure it's above other elements */
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.confirm-button,
+.cancel-button
+{
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.confirm-button
+{
+    background-color: #4CAF50;
+    color: white;
+}
+
+.cancel-button
+{
+    background-color: #ccc;
+    color: #333;
+}
+
+.backdrop
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    z-index: 3; /* Задний фон должен быть над всеми остальными элементами */
+    display: none; /* Начальное состояние - скрыто */
+}
+
+.invalid-cell
+{
+    background-color: rgba(255, 0, 0, 0.5); /* Чуть темнее красный цвет */
+    transition: background-color 8s ease; /* Плавная анимация на 8 секунд */
+}
+
+.invalid-cell.fade-out
+{
+    background-color: #6b6664; /* Обратный цвет (исчезновение) */
+}
+
+.notification
+{
+    position: fixed;
+    bottom: -100px; /* Начальная позиция уведомления */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px; /* Ширина уведомления */
+    padding: 15px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    font-size: 18px; /* Размер текста уведомления */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s, bottom 0.3s;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+/* Анимация появления */
+.notification.show
+{
+    opacity: 1;
+    bottom: 20px; /* Конечная позиция уведомления */
+    transition: opacity 0.3s, bottom 0.3s;
+}
+
+/* Анимация исчезновения */
+.notification.hide
+{
+    opacity: 0;
+    bottom: -100px; /* Начальная позиция уведомления */
+    transition: opacity 0.3s, bottom 0.3s;
+}
+
+.toggle-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.toggle {
+    flex: 1; /* Занимает всю доступную ширину внутри контейнера */
+    height: 30px; /* Высота тогла */
+    border: 1px solid rgb(76, 175, 80); /* Зеленая рамка */
+    background-color: white; /* Белый фон */
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
+    line-height: 20px;
+    color: rgb(76, 175, 80); /* Зеленый текст */
+    font-weight: bold;
+    border-radius: 10px; /* Закругленные края */
+    margin: 0 5px; /* Отступы между тоглами */
+    transition: background-color 0.3s, color 0.3s; /* Плавное изменение цвета при наведении */
+}
+
+.toggle:hover {
+    background-color: rgb(76, 175, 80); /* Зеленый фон при наведении */
+    color: white; /* Белый текст при наведении */
+}
